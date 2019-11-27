@@ -1,0 +1,60 @@
+﻿using System;
+using System.Reflection;
+using System.Configuration;
+
+using Unity;
+using Unity.Injection;
+using Unity.RegistrationByConvention;
+using Microsoft.Extensions.DependencyInjection;
+
+using Starter.Data.Services;
+using Starter.Data.ViewModels;
+using Starter.Data.Connections;
+using Starter.Data.Repositories;
+using Starter.Framework.Clients;
+using Starter.Framework.Entities;
+using Starter.Framework.Services;
+using Starter.MessageBroker.Azure;
+using Starter.Repository.Connections;
+using Starter.Repository.Repositories;
+
+namespace Starter.Bootstrapper
+{
+    /// <summary>
+    /// Sets up the dependency resolution for the project
+    /// </summary>
+    public static class Setup
+    {
+        /// <summary>
+        /// Sets the dependency resolution for the web project
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
+        public static IServiceProvider Web(IServiceCollection services)
+        {
+            // Register all the dependencies
+            Bootstrap();
+
+            return IocWrapper.Instance.Container.Resolve<IServiceProvider>();
+        }
+
+        /// <summary>
+        /// Provides means to registry different service implementations
+        /// based on the setup type
+        /// </summary>
+        public static void Bootstrap()
+        {
+            var container = new UnityContainer();
+
+            container.RegisterType<Settings, SettingsDebug>();
+            container.RegisterType<IApiClient, ApiClient>();
+
+            container.RegisterType<ICatRepository, CatRepository>();
+            container.RegisterType<IMessageBroker, AzureMessageBroker>();
+            container.RegisterType<ICatService, CatService>();
+            container.RegisterType<IMainViewModel, MainViewModel>();
+
+            IocWrapper.Instance = new IocWrapper(container);
+        }
+    }
+}
