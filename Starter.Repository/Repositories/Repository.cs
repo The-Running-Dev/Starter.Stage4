@@ -48,7 +48,6 @@ namespace Starter.Repository.Repositories
                 token = segment.ContinuationToken;
 
                 items.AddRange(segment);
-
             } while (token != null);
 
             return items;

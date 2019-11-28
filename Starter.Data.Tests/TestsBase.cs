@@ -20,20 +20,20 @@ namespace Starter.Data.Tests
     [SetUpFixture]
     public class TestsBase
     {
-        protected List<Cat> Cats;
+        protected List<Cat> Cats { get; set; }
 
-        protected MainViewModel ViewModel;
+        protected MainViewModel ViewModel { get; set; }
 
-        protected IApiClient ApiClient;
+        protected IApiClient ApiClient { get; set; }
 
-        protected IMessageBroker MessageBus;
+        protected IMessageBroker MessageBroker { get; set; }
 
-        protected ICatService CatService;
+        protected ICatService CatService { get; set; }
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            Setup.Bootstrap();
+            Setup.Bootstrap(SetupType.Test);
 
             CreateCatTestData();
 
@@ -74,7 +74,7 @@ namespace Starter.Data.Tests
                 });
 
             ApiClient = mockApiClient.Object;
-            MessageBus = mockServiceBus.Object;
+            MessageBroker = mockServiceBus.Object;
             CatService = mockCatService.Object;
 
             ViewModel = new MainViewModel(CatService);

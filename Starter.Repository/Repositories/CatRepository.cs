@@ -16,7 +16,7 @@ namespace Starter.Repository.Repositories
     /// </summary>
     public class CatRepository : Repository, ICatRepository
     {
-        public CatRepository(Settings settings) : base("Cats", settings)
+        public CatRepository(Settings settings) : base(settings.CatEntityTableName, settings)
         {
         }
 
@@ -29,7 +29,7 @@ namespace Starter.Repository.Repositories
         {
             var query = new TableQuery<Cat>().Where(
                 TableQuery.GenerateFilterCondition(
-                    "RowKey",
+                    nameof(Cat.RowKey),
                     QueryComparisons.Equal,
                     id.ToString()));
 
@@ -41,10 +41,10 @@ namespace Starter.Repository.Repositories
         public async Task<Cat> GetBySecondaryId(Guid id)
         {
             var query = new TableQuery<Cat>().Where(
-                TableQuery.GenerateFilterCondition(
-                    "SecondaryId",
+                TableQuery.GenerateFilterConditionForGuid(
+                    nameof(Cat.SecondaryId),
                     QueryComparisons.Equal,
-                    id.ToString()));
+                    id));
 
             var entities = await ExecuteQuery<Cat>(query);
 

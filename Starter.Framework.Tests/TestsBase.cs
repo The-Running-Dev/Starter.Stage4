@@ -13,12 +13,12 @@ namespace Starter.Framework.Tests
     [SetUpFixture]
     public class TestsBase
     {
-        protected SqlDataRecord SqlDataRecord;
+        protected SqlDataRecord SqlDataRecord { get; set; }
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            Setup.Bootstrap();
+            Setup.Bootstrap(SetupType.Test);
 
             SqlDataRecord = new SqlDataRecord(
                 new SqlMetaData("Id", SqlDbType.UniqueIdentifier),

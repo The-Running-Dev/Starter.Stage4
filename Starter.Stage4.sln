@@ -32,7 +32,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starter.Database.Azure", "Starter.Database.Azure\Starter.Database.Azure.csproj", "{411C67A0-A46A-4B32-9BE8-E2D0878808B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starter.Azure.Populate", "Starter.Azure.Populate\Starter.Azure.Populate.csproj", "{411C67A0-A46A-4B32-9BE8-E2D0878808B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,21 +1,14 @@
 ﻿using System;
-using System.Reflection;
-using System.Configuration;
 
 using Unity;
-using Unity.Injection;
-using Unity.RegistrationByConvention;
 using Microsoft.Extensions.DependencyInjection;
 
 using Starter.Data.Services;
 using Starter.Data.ViewModels;
-using Starter.Data.Connections;
 using Starter.Data.Repositories;
 using Starter.Framework.Clients;
 using Starter.Framework.Entities;
-using Starter.Framework.Services;
 using Starter.MessageBroker.Azure;
-using Starter.Repository.Connections;
 using Starter.Repository.Repositories;
 
 namespace Starter.Bootstrapper
@@ -42,11 +35,28 @@ namespace Starter.Bootstrapper
         /// Provides means to registry different service implementations
         /// based on the setup type
         /// </summary>
-        public static void Bootstrap()
+        public static void Bootstrap(SetupType setupType = SetupType.Debug)
         {
             var container = new UnityContainer();
 
-            container.RegisterType<Settings, SettingsDebug>();
+            switch (setupType)
+            {
+                case SetupType.Debug:
+                    container.RegisterType<Settings, SettingsDebug>();
+
+                    break;
+                case SetupType.Release:
+                    container.RegisterType<Settings, Settings>();
+
+                    break;
+                case SetupType.Test:
+                    container.RegisterType<Settings, SettingsTest>();
+
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(setupType), setupType, null);
+            }
+            
             container.RegisterType<IApiClient, ApiClient>();
 
             container.RegisterType<ICatRepository, CatRepository>();

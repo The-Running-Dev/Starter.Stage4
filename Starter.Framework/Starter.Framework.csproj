@@ -107,7 +107,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ISettings.cs" />
     <Compile Include="Entities\Settings.cs" />
+    <Compile Include="Entities\SettingsDebug.cs" />
+    <Compile Include="Entities\SettingsTest.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\DbCommandExtensions.cs" />
     <Compile Include="Extensions\DbRecordExtensions.cs" />

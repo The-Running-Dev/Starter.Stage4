@@ -54,7 +54,7 @@ namespace Starter.Repository.Tests.Repositories
         [Category("Integration")]
         public async Task Create_Cat_Successful()
         {
-            var cat = new Cat { Id = Guid.NewGuid(), Name = Guid.NewGuid().ToString(), AbilityId = Ability.Napping };
+            var cat = new Cat(Guid.NewGuid().ToString(), Ability.Napping);
 
             Cats.Add(cat);
             await CatRepository.Create(cat);
