@@ -19,14 +19,14 @@ namespace Starter.API.Tests
     [SetUpFixture]
     public class TestsBase
     {
-        protected List<Cat> Cats;
+        protected List<Cat> Cats { get; set; }
 
         protected CatController CatController;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            Setup.Bootstrap();
+            Setup.Bootstrap(SetupType.Test);
 
             CreateCatTestData();
 

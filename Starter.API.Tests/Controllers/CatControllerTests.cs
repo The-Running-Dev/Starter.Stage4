@@ -10,7 +10,7 @@ using Starter.Data.Entities;
 namespace Starter.API.Tests.Controllers
 {
     /// <summary>
-    /// 
+    /// Tests for the CatController class
     /// </summary>
     [TestFixture]
     public class CatControllerTests : TestsBase
