@@ -41,16 +41,16 @@ namespace Starter.Bootstrapper
 
             switch (setupType)
             {
-                case SetupType.Debug:
-                    container.RegisterType<Settings, SettingsDebug>();
+                case SetupType.Release:
+                    container.RegisterType<ISettings, Settings>();
 
                     break;
-                case SetupType.Release:
-                    container.RegisterType<Settings, Settings>();
+                case SetupType.Debug:
+                    container.RegisterType<ISettings, SettingsDev>();
 
                     break;
                 case SetupType.Test:
-                    container.RegisterType<Settings, SettingsTest>();
+                    container.RegisterType<ISettings, SettingsTest>();
 
                     break;
                 default:
