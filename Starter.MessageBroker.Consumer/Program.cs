@@ -3,6 +3,7 @@
 using Topshelf;
 
 using Starter.Bootstrapper;
+using Starter.Data.Entities;
 using Starter.Data.Services;
 using Starter.Framework.Clients;
 
@@ -14,20 +15,19 @@ namespace Starter.MessageBroker.Consumer
         {
             Setup.Bootstrap();
 
-            var messageBus = IocWrapper.Instance.GetService<IMessageBroker>();
+            var messageBroker = IocWrapper.Instance.GetService<IMessageBroker<Cat>>();
             var apiClient = IocWrapper.Instance.GetService<IApiClient>();
 
             var rc = HostFactory.Run(x =>
             {
                 x.Service<MessageBrokerConsumer>(s =>
                 {
-                    s.ConstructUsing(name => new MessageBrokerConsumer(messageBus, apiClient));
+                    s.ConstructUsing(name => new MessageBrokerConsumer(messageBroker, apiClient));
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Stop());
                 });
                 x.RunAsLocalSystem();
-
-                x.SetDescription("MessageBus Consumer");
+                x.SetDescription("MessageBroker Consumer");
             });
 
             var exitCode = (int)Convert.ChangeType(rc, rc.GetTypeCode());

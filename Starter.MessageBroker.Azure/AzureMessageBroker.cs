@@ -1,68 +1,81 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
+using Microsoft.Azure.ServiceBus;
 
 using Starter.Data.Entities;
 using Starter.Data.Services;
+using Starter.Framework.Entities;
 using Starter.Framework.Extensions;
 
 namespace Starter.MessageBroker.Azure
 {
     /// <summary>
-    /// 
+    /// Implements IMessageBroker in Azure Service Bus
     /// </summary>
-    public class AzureMessageBroker : IMessageBroker
+    public class AzureMessageBroker<T> : IMessageBroker<T>
     {
-        private readonly IModel _channel;
+        public event EventHandler<Message<T>> DataReceived;
 
-        private readonly EventingBasicConsumer _consumer;
-        
-        private readonly IConnection _connection;
-        
-        private readonly string _queueName;
+        private readonly IQueueClient _queueClient;
 
-        public event EventHandler<Message<Cat>> DataReceived;
-
-        public AzureMessageBroker()
+        public AzureMessageBroker(ISettings settings)
         {
-            var factory = new ConnectionFactory { HostName = "localhost" };
-
-            _connection = factory.CreateConnection();
-            _channel = _connection.CreateModel();
-            _consumer = new EventingBasicConsumer(_channel);
-            
-            _queueName = "Starter.Queue";
-            _channel.QueueDeclare(_queueName, false, false, false, null);
-        }
-        
-        public async Task Send<T>(T entity)
-        {
-            await Task.Run(() =>
-            {
-                var entityAsBytes = entity.ToJsonBytes();
-
-                _channel.BasicPublish(string.Empty, _queueName, null, entityAsBytes);
-            });
+            _queueClient = new QueueClient(settings.ServiceBusConnectionString, settings.ServiceBusQueue);
         }
 
-        public void Receive<T>() where T : new()
+        public async Task Send(Message<T> entity)
         {
-            _consumer.Received += (model, args) =>
+            try
             {
-                var message = args.Body.FromJsonBytes<Message<Cat>>();
+                var message = new Message(entity.ToJsonBytes());
+                
+                await _queueClient.SendAsync(message);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"{DateTime.Now} :: Exception: {exception.Message}");
+                
+                throw;
+            }
+        }
 
-                DataReceived?.Invoke(this, message);
+        public void Receive()
+        {
+            var messageHandlerOptions = new MessageHandlerOptions(ExceptionReceivedHandler)
+            {
+                MaxConcurrentCalls = 1,
+                AutoComplete = false
             };
 
-            _channel.BasicConsume(_queueName, true, _consumer);
+            _queueClient.RegisterMessageHandler(async (Message rawMessage, CancellationToken token) =>
+            {
+                var message = rawMessage.Body.FromJsonBytes<Message<T>>();
+
+                DataReceived?.Invoke(this, message);
+
+                await _queueClient.CompleteAsync(rawMessage.SystemProperties.LockToken);
+            }, messageHandlerOptions);
         }
 
         public void Stop()
         {
-            _channel.Close();
-            _connection.Close();
+            _queueClient.CloseAsync();
+        }
+
+        private Task ExceptionReceivedHandler(ExceptionReceivedEventArgs exceptionReceivedEventArgs)
+        {
+            Console.WriteLine($"Message handler encountered an exception {exceptionReceivedEventArgs.Exception}.");
+
+            var context = exceptionReceivedEventArgs.ExceptionReceivedContext;
+
+            Console.WriteLine("Exception context for troubleshooting:");
+            Console.WriteLine($"- Endpoint: {context.Endpoint}");
+            Console.WriteLine($"- Entity Path: {context.EntityPath}");
+            Console.WriteLine($"- Executing Action: {context.Action}");
+
+            return Task.CompletedTask;
         }
     }
 }

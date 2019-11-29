@@ -6,22 +6,25 @@ using Starter.Framework.Clients;
 
 namespace Starter.MessageBroker.Consumer
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MessageBrokerConsumer : IMessageBrokerConsumer
     {
-        private readonly IMessageBroker _messageBus;
+        private readonly IMessageBroker<Cat> _messageBroker;
         
         private readonly IApiClient _apiClient;
 
-        public MessageBrokerConsumer(IMessageBroker messageBus, IApiClient apiClient)
+        public MessageBrokerConsumer(IMessageBroker<Cat> messageBroker, IApiClient apiClient)
         {
-            _messageBus = messageBus;
+            _messageBroker = messageBroker;
             _apiClient = apiClient;
 
-            _messageBus.DataReceived += OnDataReceived;
+            _messageBroker.DataReceived += OnDataReceived;
         }
 
         /// <summary>
-        /// Handles the data received from the message bus
+        /// Handles the data received from the message broker
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -50,14 +53,14 @@ namespace Starter.MessageBroker.Consumer
 
         public bool Start()
         {
-            _messageBus.Receive<Cat>();
+            _messageBroker.Receive();
 
             return true;
         }
 
         public bool Stop()
         {
-            _messageBus.Stop();
+            _messageBroker.Stop();
             
             return true;
         }
