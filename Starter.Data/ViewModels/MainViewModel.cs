@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading;
 using System.Windows.Input;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Threading;
+
 using Starter.Data.Commands;
 using Starter.Data.Entities;
 using Starter.Data.Services;

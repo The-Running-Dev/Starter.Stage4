@@ -10,7 +10,11 @@ namespace Starter.API
     {
         public static void RegisterComponents()
         {
-			Setup.Bootstrap();
+#if DEBUG
+            Setup.Bootstrap();
+#else
+            Setup.Bootstrap(SetupType.Release);
+#endif
 
             GlobalConfiguration.Configuration.DependencyResolver = new UnityDependencyResolver(IocWrapper.Instance.Container);
         }
