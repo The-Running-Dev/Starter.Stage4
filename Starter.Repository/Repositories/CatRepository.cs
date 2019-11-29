@@ -16,7 +16,7 @@ namespace Starter.Repository.Repositories
     /// </summary>
     public class CatRepository : Repository, ICatRepository
     {
-        public CatRepository(Settings settings) : base(settings.CatEntityTableName, settings)
+        public CatRepository(ISettings settings) : base(settings, settings.CatEntityTableName)
         {
         }
 

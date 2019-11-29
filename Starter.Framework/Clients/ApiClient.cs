@@ -12,7 +12,7 @@ namespace Starter.Framework.Clients
 {
     public class ApiClient : IApiClient
     {
-        public ApiClient(Settings settings)
+        public ApiClient(ISettings settings)
         {
             _resourceUrl = settings.ResourceUrl;
             _client = new RestClient(settings.ApiUrl);

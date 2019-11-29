@@ -16,9 +16,9 @@ namespace Starter.Repository.Repositories
 
         private readonly CloudTable _table;
 
-        public Repository(string tableName, Settings settings)
+        public Repository(ISettings settings, string tableName)
         {
-            _storageAccount = CloudStorageAccount.Parse(settings.ConnectionString);
+            _storageAccount = CloudStorageAccount.Parse(settings.TableStorageConnectionString);
 
             var tableClient = _storageAccount.CreateCloudTableClient(new TableClientConfiguration());
             _table = tableClient.GetTableReference(tableName);
