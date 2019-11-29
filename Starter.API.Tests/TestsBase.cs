@@ -47,11 +47,11 @@ namespace Starter.API.Tests
                     Cats.Add(entity);
                     return Task.CompletedTask;
                 });
-            
+
             catRepository.Setup(x => x.Delete(It.IsAny<Guid>()))
                 .Returns((Guid id) =>
                 {
-                    Cats.Remove(Cats.FirstOrDefault(x=>x.Id == id));
+                    Cats.Remove(Cats.FirstOrDefault(x => x.Id == id));
                     return Task.CompletedTask;
                 });
 
@@ -62,9 +62,9 @@ namespace Starter.API.Tests
         {
             Cats = new List<Cat>
             {
-                new Cat { Id = Guid.NewGuid(), SecondaryId = Guid.NewGuid(), Name  = "Widget", AbilityId = Ability.Eating },
-                new Cat { Id = Guid.NewGuid(), SecondaryId = Guid.NewGuid(), Name  = "Garfield", AbilityId = Ability.Engineering },
-                new Cat { Id = Guid.NewGuid(), SecondaryId = Guid.NewGuid(), Name  = "Mr. Boots", AbilityId = Ability.Lounging }
+                new Cat("Widget", Ability.Eating),
+                new Cat("Garfield", Ability.Engineering),
+                new Cat("Mr. Boots", Ability.Lounging)
             };
         }
     }

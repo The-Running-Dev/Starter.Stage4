@@ -26,7 +26,7 @@ namespace Starter.Data.Tests
 
         protected IApiClient ApiClient { get; set; }
 
-        protected IMessageBroker MessageBroker { get; set; }
+        protected IMessageBroker<Cat> MessageBroker { get; set; }
 
         protected ICatService CatService { get; set; }
 
@@ -38,7 +38,7 @@ namespace Starter.Data.Tests
             CreateCatTestData();
 
             var mockApiClient = new Mock<IApiClient>();
-            var mockServiceBus = new Mock<IMessageBroker>();
+            var mockServiceBus = new Mock<IMessageBroker<Cat>>();
             var mockCatService = new Mock<ICatService>();
 
             // Setup the cat service
@@ -84,19 +84,9 @@ namespace Starter.Data.Tests
         {
             Cats = new List<Cat>
             {
-                new Cat
-                {
-                    Id = Guid.NewGuid(), SecondaryId = Guid.NewGuid(), Name = "Widget", AbilityId = Ability.Eating
-                },
-                new Cat
-                {
-                    Id = Guid.NewGuid(), SecondaryId = Guid.NewGuid(), Name = "Garfield",
-                    AbilityId = Ability.Engineering
-                },
-                new Cat
-                {
-                    Id = Guid.NewGuid(), SecondaryId = Guid.NewGuid(), Name = "Mr. Boots", AbilityId = Ability.Lounging
-                }
+                new Cat("Widget", Ability.Eating),
+                new Cat("Garfield",Ability.Engineering),
+                new Cat("Mr. Boots", Ability.Lounging)
             };
         }
     }
