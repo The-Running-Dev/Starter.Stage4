@@ -9,12 +9,12 @@
 
         string CatEntityTableName { get; }
 
-        string ConnectionString { get; }
-        
-        string DatabaseConnection { get; }
+        string TableStorageConnectionString { get; }
         
         string ResourceUrl { get; }
         
         string ServiceBusConnectionString { get; }
+
+        string ServiceBusQueue { get; }
     }
 }
