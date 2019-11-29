@@ -8,13 +8,13 @@ namespace Starter.Data.Services
     /// <summary>
     /// Defines the contract for the message broker
     /// </summary>
-    public interface IMessageBroker
+    public interface IMessageBroker<T>
     {
-        event EventHandler<Message<Cat>> DataReceived;
+        event EventHandler<Message<T>> DataReceived;
 
-        Task Send<T>(T entity);
+        Task Send(Message<T> entity);
 
-        void Receive<T>() where T : new();
+        void Receive();
 
         void Stop();
     }

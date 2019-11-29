@@ -7,7 +7,7 @@ using Starter.Data.Entities;
 namespace Starter.Data.Services
 {
     /// <summary>
-    /// Defines the contract for Cat related data access
+    /// Defines the contract for the Cat related business logic
     /// </summary>
     public interface ICatService
     {

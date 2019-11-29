@@ -1,4 +1,7 @@
 ﻿using System;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
 using Starter.Framework.Extensions;
 
 namespace Starter.Data.Entities
@@ -21,15 +24,19 @@ namespace Starter.Data.Entities
             RowKey = Id.ToString();
 
             Name = name;
-            AbilityId = abilityId;
-            Ability = abilityId.GetDescription();
+            AbilityId = ((int)abilityId);
+            Ability = abilityId;
         }
 
         public string Name { get; set; }
 
-        public string Ability { get; set; }
-        
-        public Ability AbilityId { get; set; }
+        public int AbilityId { get; set; }
+
+        public Ability Ability
+        {
+            get => (Ability)AbilityId;
+            set => AbilityId = (int) value;
+        }
 
         public Guid SecondaryId { get; set; }
     }

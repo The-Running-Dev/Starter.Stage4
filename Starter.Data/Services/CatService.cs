@@ -7,13 +7,16 @@ using Starter.Framework.Clients;
 
 namespace Starter.Data.Services
 {
+    /// <summary>
+    /// Implements the Cat related business logic
+    /// </summary>
     public class CatService : ICatService, IDisposable
     {
         private readonly IApiClient _apiClient;
 
-        private IMessageBroker _messageBroker;
+        private IMessageBroker<Cat> _messageBroker;
 
-        public CatService(IMessageBroker messageBroker, IApiClient apiClient)
+        public CatService(IMessageBroker<Cat> messageBroker, IApiClient apiClient)
         {
             _messageBroker = messageBroker;
             _apiClient = apiClient;
