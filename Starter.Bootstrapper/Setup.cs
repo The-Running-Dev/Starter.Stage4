@@ -2,7 +2,7 @@
 
 using Unity;
 using Microsoft.Extensions.DependencyInjection;
-
+using Starter.Data.Entities;
 using Starter.Data.Services;
 using Starter.Data.ViewModels;
 using Starter.Data.Repositories;
@@ -60,7 +60,7 @@ namespace Starter.Bootstrapper
             container.RegisterType<IApiClient, ApiClient>();
 
             container.RegisterType<ICatRepository, CatRepository>();
-            container.RegisterType<IMessageBroker, AzureMessageBroker>();
+            container.RegisterType<IMessageBroker<Cat>, AzureMessageBroker<Cat>>();
             container.RegisterType<ICatService, CatService>();
             container.RegisterType<IMainViewModel, MainViewModel>();
 

@@ -13,7 +13,7 @@ namespace Starter.Azure.Populate
 
         public static async Task Main(string[] args)
         {
-            var isRelease = args?[0].IsEqualTo("-release") ?? false;
+            var isRelease = args.Length > 0 && args[0].IsEqualTo("-release");
 
             Setup.Bootstrap(isRelease ? SetupType.Release : SetupType.Debug);
 
