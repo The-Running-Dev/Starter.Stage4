@@ -32,7 +32,7 @@ namespace Starter.Repository.Tests
             CatRepository = IocWrapper.Instance.GetService<ICatRepository>();
             
             var settings = IocWrapper.Instance.GetService<Settings>();
-            StorageAccount = CloudStorageAccount.Parse(settings.ConnectionString);
+            StorageAccount = CloudStorageAccount.Parse(settings.TableStorageConnectionString);
 
             var tableClient = StorageAccount.CreateCloudTableClient(new TableClientConfiguration());
             CatsTable = tableClient.GetTableReference(settings.CatEntityTableName);
